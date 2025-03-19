@@ -33,8 +33,7 @@ app.use('/login', loginRouter);
 app.use('/logout', logoutRouter);
 app.use('/refresh', refreshRouter);
 
-app.use('/api/v1', [memberRouter, userRouter]);
-app.use('/api/v1', verifyAccessToken, [eventRouter]);
+app.use('/api/v1', [memberRouter, eventRouter, userRouter]); // add verifyAccessToken after we are done adding stuff to the db
 
 app.get('/', (req, res) => {
     res.send('Hello World');
