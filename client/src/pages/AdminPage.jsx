@@ -137,8 +137,8 @@ const AdminPage = () => {
       </div>
 
       {/* Member List */}
-      <Card className="flex-1 gap-5">
-        <ScrollArea className="h-full">
+      <Card className="flex-1">
+        <ScrollArea className="h-full flex gap-5">
           <CardContent className="p-4">
             {filteredMembers.length === 0 ? (
               <p className="text-muted-foreground text-center py-4">
