@@ -1,4 +1,3 @@
-// In your authContext.jsx
 import { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
@@ -26,13 +25,24 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(false);
   };
 
+  // Add this useEffect to sync logout across all tabs
+  useEffect(() => {
+    const syncLogout = (event) => {
+      if (event.key === "encryptedEmail" && !event.newValue) {
+        setIsAuthenticated(false);
+      }
+    };
+    window.addEventListener("storage", syncLogout);
+    return () => window.removeEventListener("storage", syncLogout);
+  }, []);
+
   return (
-    <AuthContext.Provider 
-      value={{ 
-        isAuthenticated, 
-        login, 
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
+        login,
         logout,
-        loading 
+        loading,
       }}
     >
       {children}
