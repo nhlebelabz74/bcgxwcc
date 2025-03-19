@@ -4,6 +4,28 @@ const { AES } = require('crypto-js');
 const CryptoJS = require('crypto-js');
 require('dotenv').config();
 
+const clients = new Set(); // Track connected clients
+
+// New SSE endpoint controller
+const sseUpdates = asyncWrapper(async (req, res) => {
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.flushHeaders();
+
+  // Send initial heartbeat
+  res.write(':\n\n');
+  const heartbeat = setInterval(() => res.write(':\n\n'), 30000);
+
+  clients.add(res);
+  
+  req.on('close', () => {
+    clearInterval(heartbeat);
+    clients.delete(res);
+    res.end();
+  });
+});
+
 // endpoint: /create-event
 const createEvent = asyncWrapper(async (req, res) => {
   const { name, date, location, description, partners, limit } = req.body;
@@ -96,7 +118,6 @@ const addRSVPs = asyncWrapper(async (req, res) => {
   });
 });
 
-
 // endpoint: /add-attendee/:eventName/:email
 const addAttendee = asyncWrapper(async (req, res) => {
   const { eventName, email } = req.params;
@@ -125,10 +146,25 @@ const addAttendee = asyncWrapper(async (req, res) => {
     return res.status(404).json({ message: 'Member not found' });
   }
 
-  // Add the email to the attended list
-  await Event.updateOne({ name: eventName }, { $push: { 'attendance.attended': decryptedEmail } });
+  await Event.updateOne({ name: eventName }, { 
+    $push: { 'attendance.attended': decryptedEmail } 
+  });
 
-  return res.status(200).json({ message: 'Attendee added successfully', member: member });
+  // Broadcast to all connected clients
+  const memberData = {
+    fullname: member.fullname,
+    email: member.email
+  };
+
+  clients.forEach(client => {
+    client.write(`event: new-member\n`);
+    client.write(`data: ${JSON.stringify(memberData)}\n\n`);
+  });
+
+  return res.status(200).json({ 
+    message: 'Attendee added successfully', 
+    member: member 
+  });
 });
 
 // endpoint: /get-attendees/:eventName
@@ -162,5 +198,6 @@ module.exports = {
   addRSVP,
   addAttendee,
   getAttendees,
-  addRSVPs
+  addRSVPs,
+  sseUpdates
 };
