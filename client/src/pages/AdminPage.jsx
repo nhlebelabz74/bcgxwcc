@@ -38,6 +38,9 @@ const AdminPage = () => {
         });
         setMembers(response.data.attendees);
       } catch (error) {
+        if(error.sessionExpired)
+          return handleLogout();
+
         setAlert({
           type: 'error',
           message: error.message || 'Failed to load members',
