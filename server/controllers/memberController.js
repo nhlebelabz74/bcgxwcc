@@ -59,6 +59,7 @@ const createMembers = asyncWrapper(async (req, res) => {
 const sendQR = asyncWrapper(async (req, res) => {
   const { eventName } = req.params;
 
+  // Find the event by name
   const event = await Event.findOne({ name: eventName });
 
   if (!event) {
@@ -66,42 +67,58 @@ const sendQR = asyncWrapper(async (req, res) => {
   }
 
   try {
-    // Use Promise.all to wait for all emails to be sent
-    await Promise.all(event.attendance.rsvps.map(async (email) => {
+    // Function to introduce a delay
+    const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    // Loop through each RSVP email
+    for (const email of event.attendance.rsvps) {
       try {
+        // Find the member by email
         const member = await Member.findOne({ email: email });
 
-        if (!member) return;
+        if (!member) continue; // Skip if member not found
 
-        // create encrypted email for the request (precaution)
+        // Create encrypted email for the request (precaution)
         const encryptedEmail = AES.encrypt(email, process.env.ENCRYPTION_KEY).toString();
 
+        // Generate the QR code link
         const qrLink = `${process.env.BACKEND_URL}/api/v1/add-attendee/${eventName}/${encodeURIComponent(encryptedEmail)}`;
+
+        // Generate the QR code image
         const qrCode = await generateQR({ link: qrLink });
 
+        // Convert QR code to buffer for email attachment
         const qrCodeBuffer = Buffer.from(
           qrCode.replace(/^data:image\/\w+;base64,/, ''), 
           'base64'
         );
+
+        // Prepare email attachments
         const attachments = [{
           filename: `WCC_x_BCG_Opening_Event_QR_-_${member.fullname}.png`.split('_').join(' '),
           content: qrCodeBuffer,
           cid: 'qrcode'
         }];
 
+        // Send the email
         await sendEmail({
           receiver_email: email,
           subject: 'Thanks for RSVPing for our event',
-          html: QR_emailHtml({ name: member.fullname }), // Removed link parameter
+          html: QR_emailHtml({ name: member.fullname }), // Your email template function
           attachments: attachments
         });
+
+        console.log(`Email sent to ${email}`);
+
+        // Add a delay of 2 seconds (2000 milliseconds) between each email
+        await wait(2000);
       } catch (error) {
         console.error(`Error sending email to ${email}:`, error);
-        // Throw the error to be caught by the outer Promise.all
-        throw error;
+        // Continue processing other emails even if one fails
       }
-    }));
-    
+    }
+
+    // Return success response
     return res.status(200).json({ message: 'QR codes sent successfully' });
   } catch (error) {
     console.error('Error in batch email sending:', error);

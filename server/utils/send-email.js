@@ -16,7 +16,7 @@ const sendEmail = async ({ receiver_email, subject, html, attachments }) => {
     });
 
     const mailOptions = {
-      from: `"The Wits Consulting Club" <${company_email}>`,
+      from: `"Wits Consulting Club" <${company_email}>`,
       to: isMultipleEmails ? receiver_email.join(', ') : receiver_email,
       subject: subject,
       html: html,
