@@ -19,16 +19,10 @@ const app = express();
 const port = process.env.PORT || 4774;
 
 app.use(cors({
-    origin: function(origin, callback) 
-    {
-        const allowedOrigins = ['http://localhost:5173', 'https://bcgxwcc-opening-event.netlify.app'];
-        
-        if (!origin || allowedOrigins.indexOf(origin) !== -1)
-            callback(null, origin);
-        else
-            callback(new Error('Not allowed by CORS'));
-    },
-    credentials: true
+    origin: ['http://localhost:5173', 'https://bcgxwcc-opening-event.netlify.app'],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(cookieParser());
 app.use(compression());
