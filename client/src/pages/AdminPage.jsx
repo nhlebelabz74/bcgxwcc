@@ -51,7 +51,7 @@ const AdminPage = () => {
     };
 
     fetchMembers();
-  }, []);
+  }, [filteredMembers.length]);
 
   const handleScan = async (err, data) => {
     if (data) {
