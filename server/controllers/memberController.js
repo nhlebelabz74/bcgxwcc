@@ -28,14 +28,31 @@ const createMembers = asyncWrapper(async (req, res) => {
     return res.status(400).json({ message: 'Invalid members data. Expected a non-empty array.' });
   }
 
-  // Create multiple members
-  await Member.insertMany(members, {
+  // Extract emails from the incoming members
+  const emails = members.map(member => member.email);
+
+  // Check which members already exist in the database
+  const existingMembers = await Member.find({ email: { $in: emails } });
+
+  // Extract emails of existing members
+  const existingEmails = existingMembers.map(member => member.email);
+
+  // Filter out members who are already in the database
+  const newMembers = members.filter(member => !existingEmails.includes(member.email));
+
+  // If no new members to add, return a message
+  if (newMembers.length === 0) {
+    return res.status(200).json({ message: 'All members already exist in the database.' });
+  }
+
+  // Create only the new members
+  await Member.insertMany(newMembers, {
     validate: true,
     ordered: false,
     ignoreDuplicates: true
   });
 
-  return res.status(201).json({ message: 'Members created successfully' });
+  return res.status(201).json({ message: 'Members created successfully', newMembers });
 });
 
 // endpoint: /send-qr/:eventName
