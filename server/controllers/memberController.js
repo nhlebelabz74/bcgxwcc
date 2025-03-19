@@ -19,6 +19,25 @@ const createMember = asyncWrapper(async (req, res) => {
   return res.status(201).json({ message: 'Member created successfully' });
 });
 
+// endpoint: /create-members
+const createMembers = asyncWrapper(async (req, res) => {
+  const { members } = req.body; // array of members
+
+  // Validate that members is an array
+  if (!Array.isArray(members) || members.length === 0) {
+    return res.status(400).json({ message: 'Invalid members data. Expected a non-empty array.' });
+  }
+
+  // Create multiple members
+  await Member.insertMany(members, {
+    validate: true,
+    ordered: false,
+    ignoreDuplicates: true
+  });
+
+  return res.status(201).json({ message: 'Members created successfully' });
+});
+
 // endpoint: /send-qr/:eventName
 const sendQR = asyncWrapper(async (req, res) => {
   const { eventName } = req.params;
@@ -77,6 +96,7 @@ const sendQR = asyncWrapper(async (req, res) => {
 
 module.exports = {
   createMember,
+  createMembers,
   sendQR,
   // add sendThankYou here
 };

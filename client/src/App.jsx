@@ -34,13 +34,15 @@ const App = () => {
           <ModeToggle />
         </div>
         <Routes>
-          <Route path='/' element={ <LoginPage /> } />
+          <Route path='/login' element={ <LoginPage /> } />
+          <Route path='/' element={ <Navigate to="/login" replace/> } />
           <Route path='/404' element={ <PageNotFound /> } />
           <Route path='/admin' element={
             <ProtectedRoute>
                 <AdminPage />
             </ProtectedRoute>
           } />
+          <Route path='*' element={ <Navigate to="/404" replace /> } />
         </Routes>
         <Toaster />
       </BrowserRouter>

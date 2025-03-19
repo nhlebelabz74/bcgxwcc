@@ -1,8 +1,11 @@
-import { Button } from "@/components/ui/button"; // Assuming you have a Button component from shadcn
-import { useNavigate } from "react-router-dom"; // or useNextRouter if using Next.js
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/authContext";
+
 
 const PageNotFound = () => {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
@@ -15,10 +18,10 @@ const PageNotFound = () => {
           Stop snooping around ;)
         </p>
         <Button
-          onClick={() => navigate("/")} // Redirect to login page
-          className="mt-6"
+          onClick={() => isAuthenticated ? navigate("/admin") : navigate("/")} // Redirect
+          className="mt-6 cursor-pointer"
         >
-          Go Back To Login
+          Go Back To {isAuthenticated ? "Admin" : "Home"}
         </Button>
       </div>
     </div>
