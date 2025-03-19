@@ -59,7 +59,7 @@ const sendQR = asyncWrapper(async (req, res) => {
         // create encrypted email for the request (precaution)
         const encryptedEmail = AES.encrypt(email, process.env.ENCRYPTION_KEY).toString();
 
-        const qrLink = `${process.env.BACKEND_URL}/api/v1/add-attendee/${eventName}/${encryptedEmail}`;
+        const qrLink = `${process.env.BACKEND_URL}/api/v1/add-attendee/${eventName}/${encodeURIComponent(encryptedEmail)}`;
         const qrCode = await generateQR({ link: qrLink });
 
         const qrCodeBuffer = Buffer.from(
