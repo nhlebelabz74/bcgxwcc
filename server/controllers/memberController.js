@@ -29,16 +29,16 @@ const createMembers = asyncWrapper(async (req, res) => {
   }
 
   // Extract emails from the incoming members
-  const emails = members.map(member => member.email);
+  const emails = members.map(member => member.email.toLowerCase());
 
   // Check which members already exist in the database
   const existingMembers = await Member.find({ email: { $in: emails } });
 
   // Extract emails of existing members
-  const existingEmails = existingMembers.map(member => member.email);
+  const existingEmails = existingMembers.map(member => member.email.toLowerCase());
 
   // Filter out members who are already in the database
-  const newMembers = members.filter(member => !existingEmails.includes(member.email));
+  const newMembers = members.filter(member => !existingEmails.includes(member.email.toLowerCase()));
 
   // If no new members to add, return a message
   if (newMembers.length === 0) {

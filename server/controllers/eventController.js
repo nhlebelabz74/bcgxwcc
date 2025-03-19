@@ -74,7 +74,7 @@ const addRSVP = asyncWrapper(async (req, res) => {
 // endpoint: /add-rsvps/:eventName
 const addRSVPs = asyncWrapper(async (req, res) => {
   const { eventName } = req.params;
-  const { emails } = req.body; // array of emails
+  let { emails } = req.body; // array of emails
 
   // Validate that emails is an array
   if (!Array.isArray(emails) || emails.length === 0) {
@@ -87,6 +87,9 @@ const addRSVPs = asyncWrapper(async (req, res) => {
   if (!event) {
     return res.status(404).json({ message: 'Event not found' });
   }
+
+  //make all the emails lowercase
+  emails = emails.map(email => email.toLowerCase());
 
   // Filter out emails that have already RSVPed
   const newEmails = emails.filter(email => !event.attendance.rsvps.includes(email));
