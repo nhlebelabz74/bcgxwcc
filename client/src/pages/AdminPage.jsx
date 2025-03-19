@@ -113,8 +113,19 @@ const AdminPage = () => {
   };
 
   const handleLogout = () => {
-    navigate('/login');
-    logout();
+    request({ route: '/logout', type: 'POST' }).then(() => {
+      setAlert({
+        type: 'success',
+        message: 'Logged out successfully',
+      });
+      navigate('/login');
+      logout();
+    }).catch((error) => {
+      setAlert({
+        type: 'error',
+        message: error.message || 'Failed to logout',
+      });
+    });
   };
 
   const handleAlertClose = () => {
