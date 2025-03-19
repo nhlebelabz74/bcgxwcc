@@ -121,10 +121,10 @@ const AdminPage = () => {
   return (
     <div className="p-4 flex flex-col h-screen">
       <div className="flex justify-between mb-4">
-        <Button onClick={() => setShowScanner(true)}>
+        <Button onClick={() => setShowScanner(true)} className="cursor-pointer">
           Scan QR Code
         </Button>
-        <Button variant="destructive" onClick={handleLogout}>
+        <Button variant="destructive" className="cursor-pointer" onClick={handleLogout}>
           Logout
         </Button>
       </div>
