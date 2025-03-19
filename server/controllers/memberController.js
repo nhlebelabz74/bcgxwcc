@@ -110,8 +110,8 @@ const sendQR = asyncWrapper(async (req, res) => {
 
         console.log(`Email sent to ${email}`);
 
-        // Add a delay of 2 seconds (2000 milliseconds) between each email
-        await wait(2000);
+        // Add a delay of 5 seconds (5000 milliseconds) between each email
+        await wait(5000);
       } catch (error) {
         console.error(`Error sending email to ${email}:`, error);
         // Continue processing other emails even if one fails
