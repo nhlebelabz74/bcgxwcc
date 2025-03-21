@@ -37,15 +37,17 @@ const AdminPage = () => {
           type: 'GET',
         });
         setMembers(response.data.attendees);
-      } catch (error) {
-        if(error.sessionExpired)
-          return handleLogout();
-
+      }
+      catch (error) {
         setAlert({
           type: 'error',
           message: error.message || 'Failed to load members',
         });
-      } finally {
+
+        if(error.sessionExpired)
+          return handleLogout();
+      }
+      finally {
         setIsLoading(false);
       }
     };
@@ -89,14 +91,14 @@ const AdminPage = () => {
         const path = url.pathname;
         const endpoint = "/api/v1" + path.split('/api/v1')[1];
 
-        await request({
+        const response = await request({
           route: endpoint,
           type: 'POST',
         });
 
         setAlert({
           type: 'success',
-          message: 'Member added successfully!',
+          message: `Welcome ${response.data.member.fullname}`,
         });
 
       } catch (error) {

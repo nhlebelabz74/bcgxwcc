@@ -60,7 +60,7 @@ const refreshController = asyncWrapper(async (req, res) => {
                 res.cookie("accessToken", accessToken, { 
                     httpOnly: true,
                     secure: process.env.NODE_ENV === 'production',
-                    sameSite: 'strict',
+                    sameSite: 'None',
                     maxAge: 1000 * 60 * 30 // 30 mins
                 });
 
