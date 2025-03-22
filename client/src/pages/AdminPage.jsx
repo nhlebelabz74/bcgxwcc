@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import BarcodeScannerComponent from 'react-qr-barcode-scanner';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -120,7 +121,7 @@ const AdminPage = () => {
         type: 'success',
         message: 'Logged out successfully',
       });
-      navigate('/login');
+      window.location.href = '/login'; // Full page reload
       logout();
     }).catch((error) => {
       setAlert({
@@ -188,16 +189,19 @@ const AdminPage = () => {
         </div>
       )}
 
-      <Dialog open={!!alert} onOpenChange={handleAlertClose}>
-        <DialogContent className={alert?.type === 'error' ? 'border-destructive' : ''}>
-          <DialogHeader>
-            <DialogTitle className={alert?.type === 'error' ? 'text-destructive' : 'text-green-600'}>
+      <AlertDialog open={!!alert} onOpenChange={handleAlertClose}>
+        <AlertDialogContent className={alert?.type === 'error' ? 'border-destructive' : ''}>
+          <AlertDialogHeader>
+            <AlertDialogTitle className={alert?.type === 'error' ? 'text-destructive' : 'text-green-600'}>
               {alert?.type === 'success' ? 'Success' : 'Error'}
-            </DialogTitle>
-            <DialogDescription>{alert?.message}</DialogDescription>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
+            </AlertDialogTitle>
+            <AlertDialogDescription>{alert?.message}</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction>Ok</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
