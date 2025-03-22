@@ -57,7 +57,7 @@ const AdminPage = () => {
 
   // SSE for real-time updates
   useEffect(() => {
-    const eventSource = new EventSource('/api/v1/updates');
+    const eventSource = new EventSource(`${import.meta.env.VITE_APP_BACKEND_URL}api/v1/updates`);
 
     eventSource.addEventListener('new-member', (event) => {
       const newMember = JSON.parse(event.data);
