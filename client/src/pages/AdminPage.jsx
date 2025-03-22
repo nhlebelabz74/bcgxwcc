@@ -121,8 +121,13 @@ const AdminPage = () => {
         type: 'success',
         message: 'Logged out successfully',
       });
-      window.location.href = '/login'; // Full page reload
+      // Logout and clear auth state
       logout();
+
+      // Wait 1 second to show the alert, then redirect
+      setTimeout(() => {
+        navigate('/login'); // window.location.href('/login');
+      }, 1000);
     }).catch((error) => {
       setAlert({
         type: 'error',
