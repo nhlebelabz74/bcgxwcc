@@ -115,25 +115,24 @@ const AdminPage = () => {
     }
   };
 
-  const handleLogout = () => {
-    request({ route: '/logout', type: 'POST' }).then(() => {
+  const handleLogout = async () => {
+    try {
+      await request({ route: '/logout', type: 'POST' });
       setAlert({
         type: 'success',
         message: 'Logged out successfully',
       });
+      
       // Logout and clear auth state
       logout();
-
-      // Wait 1 second to show the alert, then redirect
-      setTimeout(() => {
-        navigate('/login'); // window.location.href('/login');
-      }, 1000);
-    }).catch((error) => {
+      navigate('/login');
+    }
+    catch (error) {
       setAlert({
         type: 'error',
         message: error.message || 'Failed to logout',
       });
-    });
+    }
   };
 
   const handleAlertClose = () => {
