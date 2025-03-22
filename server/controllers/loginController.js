@@ -37,19 +37,20 @@ const loginController = asyncWrapper(async (req, res) => {
     res.cookie("jwt", refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+        sameSite: 'None',
         maxAge: 1000 * 60 * 60 * 24 // 24 hours
     });
 
     // Set access token cookie
     res.cookie("accessToken", accessToken, { 
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+        secure: true,
+        partitioned: true,
+        sameSite: 'None',
         maxAge: 1000 * 60 * 30 // 30 mins
     });
 
-    res.status(200).json({ message: "Logged in successfully" });
+    res.status(200).json({ message: "Logged in successfully", accessToken });
 });
 
 module.exports = loginController;

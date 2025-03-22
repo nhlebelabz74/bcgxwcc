@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkAuth = () => {
       const encryptedEmail = localStorage.getItem("encryptedEmail");
-      setIsAuthenticated(!!encryptedEmail);
+      setIsAuthenticated(!!(encryptedEmail && localStorage.getItem("accessToken")));
       setLoading(false);
     };
     checkAuth();
@@ -22,13 +22,14 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem("encryptedEmail");
+    localStorage.removeItem("accessToken");
     setIsAuthenticated(false);
   };
 
   // Add this useEffect to sync logout across all tabs
   useEffect(() => {
     const syncLogout = (event) => {
-      if (event.key === "encryptedEmail" && !event.newValue) {
+      if ((event.key === "encryptedEmail" || event.key === "accessToken" ) && (!event.newValue)) {
         setIsAuthenticated(false);
       }
     };

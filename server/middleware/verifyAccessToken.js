@@ -16,14 +16,13 @@ const verifyAccessToken = async (req, res, next) => {
     const authHeader = req.headers.Authorization || req.headers.authorization;
 
     // get the accessToken from the Auth header (if it exists) or the cookies
-    const accessToken = req.cookies.accessToken || 
-                       (authHeader?.startsWith('Bearer') ? 
-                        authHeader.split(' ')[1] : null);
+    const accessToken = (authHeader?.startsWith('Bearer') ? 
+                            authHeader.split(' ')[1] : null) || req.cookies.accessToken;
 
     // no access token means admin is unauthorized and an access token must be created
     if (!accessToken)
         return res.status(401).json({ 
-            message: "You are unauthorized to access this resource" 
+            message: "You are unauthorized to access this resource"
         });
 
     // Verify the access token using the jwt.verify function

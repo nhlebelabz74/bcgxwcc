@@ -59,7 +59,8 @@ const refreshController = asyncWrapper(async (req, res) => {
                 // Set the new access token in the cookies
                 res.cookie("accessToken", accessToken, { 
                     httpOnly: true,
-                    secure: process.env.NODE_ENV === 'production',
+                    secure: true,
+                    partitioned: true,
                     sameSite: 'None',
                     maxAge: 1000 * 60 * 30 // 30 mins
                 });
@@ -67,6 +68,7 @@ const refreshController = asyncWrapper(async (req, res) => {
                 // Send success response
                 res.status(201).json({ 
                     message: "Access Token refreshed successfully",
+                    accessToken: accessToken
                 });
             }
         );

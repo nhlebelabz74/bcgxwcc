@@ -2,10 +2,19 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_APP_BACKEND_URL, 
-  headers: { 
+  headers: {
     "Content-Type": "application/json"
   },
   withCredentials: true, // Important for cookies
+});
+
+// Add request interceptor to inject fresh token
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('accessToken');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 const request = async ({ route, type, body, routeParams }) => {
@@ -60,12 +69,16 @@ const request = async ({ route, type, body, routeParams }) => {
           
           if (refreshResponse && [200, 201].includes(refreshResponse.status)) {
             console.log("Token refreshed successfully, retrying original request");
+
+            // Store the new access token from response
+            const newAccessToken = refreshResponse.data.accessToken;
+            localStorage.setItem('accessToken', newAccessToken);
+            
+            // Update the Authorization header
+            api.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+
             // Retry the original request after refreshing the token
-            const retriedResponse = await makeRequest(true);
-            return {
-              ...retriedResponse,
-              warning: refreshResponse.data?.warning || null,
-            };
+            return await makeRequest(true);
           }
         }
         catch (refreshError) {

@@ -79,7 +79,7 @@ const LoginForm = ({ className, ...props }) => {
   const onSubmit = async (data) => {
     setIsSubmitting(true);
     try {
-      await request({
+      const response = await request({
         route: "/login",
         type: "POST",
         body: {
@@ -93,6 +93,7 @@ const LoginForm = ({ className, ...props }) => {
       const encryptedEmail = AES.encrypt(data.email, SECRET_KEY).toString();
 
       localStorage.setItem("encryptedEmail", encryptedEmail);
+      localStorage.setItem("accessToken", response.data.accessToken);
       login(encryptedEmail);
 
       setAlert({ type: "success", message: "Login successful" });
