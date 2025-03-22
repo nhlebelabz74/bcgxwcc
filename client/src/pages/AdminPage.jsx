@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import BarcodeScannerComponent from 'react-qr-barcode-scanner';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/authContext';
 import request from '@/utils/request';
 import { Loader2 } from 'lucide-react';
+import { EventSourcePolyfill } from 'event-source-polyfill';
 
 const MemberCard = ({ fullname, email }) => (
   <div className="p-4 rounded-2xl border bg-accent border-ring hover:shadow-xl transition-colors cursor-pointer">
@@ -57,7 +58,12 @@ const AdminPage = () => {
 
   // SSE for real-time updates
   useEffect(() => {
-    const eventSource = new EventSource(`${import.meta.env.VITE_APP_BACKEND_URL}api/v1/updates`);
+    const eventSource = new EventSourcePolyfill(`${import.meta.env.VITE_APP_BACKEND_URL}api/v1/updates`, {
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+      }
+    });
 
     eventSource.addEventListener('new-member', (event) => {
       const newMember = JSON.parse(event.data);
