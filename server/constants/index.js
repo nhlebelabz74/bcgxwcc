@@ -125,8 +125,191 @@ const QR_emailHtml = ({ name }) => {
   `;
 };
 
-const thankYou_emailHtml = ({ name }) => {
-
+const thankYou_emailHtml = ({ survey }) => {
+  return `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Thank You for Attending Our Event</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            background-color: #FCFDFF;
+            text-align: left;
+            padding: 20px;
+            color: #051D41;
+          }
+          .container {
+            max-width: 600px;
+            background: #FFFFFF;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin: auto;
+            text-align: left;
+          }
+          h1 {
+            color: #104E81;
+          }
+          p {
+            color: #6E85A0;
+            font-size: 16px;
+          }
+          .bold {
+            font-weight: bold;
+          }
+          .highlight {
+            color: #104E81;
+          }
+          .secondary-highlight {
+            color: #147B58;
+          }
+          .event-details {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #F5F7FB;
+            border-radius: 8px;
+          }
+          .gold {
+            color: #CE9F00;
+          }
+          .button {
+            display: inline-block;
+            background-color: #104E81;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 15px;
+          }
+          .button:hover {
+            background-color: #0D3D66;
+          }
+          .signature {
+            margin-top: 30px;
+            font-size: 16px;
+            color: #051D41;
+          }
+          .signature span {
+            color: #CE9F00;
+          }
+          .social-links {
+            margin-top: 20px;
+            text-align: center;
+          }
+          .social-links a {
+            margin: 0 10px;
+            text-decoration: none;
+          }
+          .fun-fact {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #FFF9E6;
+            border-left: 4px solid #CE9F00;
+            border-radius: 5px;
+          }
+          .formula {
+            font-style: italic;
+            color: #104E81;
+            margin: 10px 0;
+          }
+          .solution {
+            font-weight: bold;
+            color: #147B58;
+          }
+          .congrats {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #FFF6E9;
+            border: 2px dashed #CE9F00;
+            border-radius: 8px;
+            text-align: center;
+          }
+          .winner-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #CE9F00;
+            margin: 10px 0;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <h1>Thank You for Attending!</h1>
+          <p>We would like to express our sincere gratitude to everyone who attended <span class="bold">The <span class="highlight">WCC</span> x <span class="secondary-highlight">BCG</span> Opening Event</span> on March 20th, 2025.</p>
+          
+          <p>It was truly a pleasure to have you all join us for this special occasion. The event was a great success, and we hope you found it informative, inspiring, and enjoyable.</p>
+          
+          <div class="event-details">
+            <p>We hope that you had the opportunity to:</p>
+            <p>• Learn about various career pathways at <span class="secondary-highlight bold">BCG</span></p>
+            <p>• Hear inspiring growth stories from industry professionals</p>
+            <p>• Gain valuable insights during our keynote and Q&A sessions</p>
+            <p>• Connect with like-minded individuals during our networking session</p>
+          </div>
+          
+          <div class="congrats">
+            <p><span class="bold highlight">Congratulations to Our Quiz Champion!</span></p>
+            <p class="winner-name">Delano Martin</p>
+            <p>For achieving the highest score in our interactive quiz. Outstanding performance!</p>
+          </div>
+          
+          <div class="fun-fact">
+            <p><span class="bold gold">Fun Game Follow-up:</span></p>
+            <p>Many of you participated in our game during the event, and almost everyone got this particular question wrong:</p>
+            <p><span class="bold">"If a product is sold at R100, and the profit margin is 25%, what was the cost price?"</span></p>
+            
+            <p><span class="bold highlight">Clarification:</span> The question was actually meant to ask about markup, not profit margin. This accidental mix-up of terms created quite the challenge!</p>
+            
+            <p><span class="bold">With markup (what we intended to ask):</span></p>
+            <p>• Markup is calculated as a percentage of the cost price</p>
+            <p>• If the markup is 25%, then: Cost Price + 25% of Cost Price = R100</p>
+            <p>• Let's call the Cost Price "x": x + 0.25x = R100</p>
+            <p>• 1.25x = R100</p>
+            <p>• x = R100 ÷ 1.25 = <span class="solution">R80</span></p>
+            
+            <p><span class="bold">With margin (what we accidentally asked):</span></p>
+            <p>• Profit Margin = (Profit ÷ Selling Price) × 100%</p>
+            <p>• 25% of R100 is the profit, which equals R25</p>
+            <p>• Cost Price = Selling Price - Profit = R100 - R25 = R75</p>
+            
+            <p>We apologize for any confusion caused by the terminology mix-up, but it certainly made for an interesting learning moment for everyone! Then, for the second question about the famous sequence, it's called the <span class="bold highlight">Fibonacci Sequence</span></p>
+          </div>
+          
+          <p>We value your feedback immensely as it helps us improve and tailor future events to better serve our community.</p>
+          
+          <div style="text-align: center;">
+            <a href="${survey}" class="button">Complete Our Feedback Survey</a>
+          </div>
+          
+          <p>We have more exciting events planned for the coming months. To stay updated, follow us on our social media platforms and keep an eye on your emails for future invitations.</p>
+          
+          <div class="event-details">
+            <p><span class="bold">Upcoming Events:</span></p>
+            <p>• <span class="highlight">Case Interview Workshop</span> - April 9th, 2025</p>
+            <p>• <span class="highlight">Simon Kucher Info Session</span> - April 10th, 2025</p>
+            <p>• <span class="highlight">Oliver Wyman CV Workshop</span> - April 23rd, 2025</p>
+            <p>• <span class="highlight">Cadena Partners Info Session</span> - April 24th, 2025</p>
+          </div>
+          
+          <p>If you have any questions or would like to get involved with our club, please don't hesitate to reach out.</p>
+          
+          <div class="social-links">
+            <p>Follow us:</p>
+            <a href="https://www.linkedin.com/company/wits-consulting-club/posts/?feedView=all" style="color: #104E81;">LinkedIn</a> |
+            <a href="https://www.instagram.com/wits_consulting_club/" style="color: #104E81;">Instagram</a> |
+            <a href="https://www.tiktok.com/@witsconsultingclub?_t=ZM-8uqDf2zTa9H&_r=1" style="color: #104E81;">TikTok</a>
+          </div>
+          
+          <p class="signature">Once again, thank you for your participation!<br><br>Kind regards,<br>Banzile Nhlebela <span>|</span> Co - Head <span>|</span> <span class="bold">The Wits Consulting Club</span></p>
+        </div>
+      </body>
+    </html>
+  `;
 }
 
 module.exports = {

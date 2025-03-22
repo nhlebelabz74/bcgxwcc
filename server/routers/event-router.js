@@ -1,4 +1,4 @@
-const { createEvent, addRSVP, addAttendee, getAttendees, addRSVPs, sseUpdates } = require('../controllers/eventController');
+const { createEvent, addRSVP, addAttendee, getAttendees, addRSVPs, sseUpdates, sendThankYouEmails } = require('../controllers/eventController');
 
 const eventRouter = require('express').Router();
 
@@ -19,5 +19,8 @@ eventRouter.get('/get-attendees/:eventName', getAttendees);
 
 // endpoint: /updates
 eventRouter.get('/updates', sseUpdates);
+
+// endpoint: /send-thank-you-emails/:eventName
+eventRouter.get('/send-thank-you-emails/:eventName', sendThankYouEmails);
 
 module.exports = eventRouter;

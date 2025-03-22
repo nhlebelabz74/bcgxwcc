@@ -1,5 +1,5 @@
 const { createUser, createUsers } = require('./userController');
-const { createEvent, addRSVP, addRSVPs, addAttendee, getAttendees, sseUpdates } = require('./eventController');
+const { createEvent, addRSVP, addRSVPs, addAttendee, getAttendees, sseUpdates, sendThankYouEmails } = require('./eventController');
 const { sendQR, createMember, createMembers } = require('./memberController');
 
 const loginController = require('./loginController');
@@ -17,6 +17,7 @@ module.exports = {
   sendQR,
   createMember,
   getAttendees,
+  sendThankYouEmails,
   createUsers,
   loginController,
   logoutController,

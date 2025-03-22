@@ -4,6 +4,9 @@ const { AES } = require('crypto-js');
 const CryptoJS = require('crypto-js');
 require('dotenv').config();
 
+const sendEmail = require('../utils/send-email');
+const { thankYou_emailHtml } = require('../constants');
+
 const clients = new Set(); // Track connected clients
 
 // New SSE endpoint controller
@@ -196,11 +199,39 @@ const getAttendees = asyncWrapper(async (req, res) => {
   return res.status(200).json({ attendees: attendees });
 });
 
+// endpoint: /send-thank-you-emails/:eventName
+const sendThankYouEmails = asyncWrapper(async (req, res) => {
+  const { eventName } = req.params;
+
+  // Find the event by name
+  const event = await Event.findOne({
+    name: eventName
+  });
+
+  if (!event) {
+    return res.status(404).json({ message: 'Event not found' });
+  }
+
+  // get an array of members who attended the event
+  const membersAttended = event.attendance.attended;
+
+  // send the email
+  const surveyLink = 'https://docs.google.com/forms/d/e/1FAIpQLSe2nEYMd4oLHqFQxMy8x5ZHMy-t_DH-jWoapcQpuuYcLscD9Q/viewform?usp=header';
+  await sendEmail({
+    receiver_email: membersAttended,
+    subject: 'Thank you for attending the event',
+    html: thankYou_emailHtml({ survey: surveyLink })
+  });
+
+  return res.status(200).json({ message: 'Thank you emails sent successfully' });
+});
+
 module.exports = {
   createEvent,
   addRSVP,
   addAttendee,
   getAttendees,
   addRSVPs,
-  sseUpdates
+  sseUpdates,
+  sendThankYouEmails
 };

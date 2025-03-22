@@ -141,6 +141,30 @@ const AdminPage = () => {
     }
   };
 
+  const handleSendThankYouEmails = async () => {
+    setIsLoading(true);
+    try {
+      await request({ 
+        route: '/api/v1/send-thank-you-emails/:eventName', 
+        type: 'GET',
+        routeParams: { eventName: 'WCCxBCGOpeningEvent' }
+      });
+      setAlert({
+        type: 'success',
+        message: 'Thank you emails sent successfully',
+      });
+    }
+    catch (error) {
+      setAlert({
+        type: 'error',
+        message: error.message || 'Failed to send thank you emails',
+      });
+    }
+    finally {
+      setIsLoading(false);
+    }
+  }
+
   const handleAlertClose = () => {
     setAlert(null);
   };
@@ -150,6 +174,9 @@ const AdminPage = () => {
       <div className="flex justify-between mb-4">
         <Button onClick={() => setShowScanner(true)} className="cursor-pointer">
           Scan QR Code
+        </Button>
+        <Button className="cursor-pointer" onClick={() => handleSendThankYouEmails()}>
+          Send Thank You Emails
         </Button>
         <Button variant="destructive" className="cursor-pointer" onClick={handleLogout}>
           Logout
