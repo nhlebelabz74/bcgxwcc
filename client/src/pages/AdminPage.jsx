@@ -130,8 +130,8 @@ const AdminPage = () => {
       });
       
       // Logout and clear auth state
-      logout();
       navigate('/login');
+      logout();
     }
     catch (error) {
       setAlert({
