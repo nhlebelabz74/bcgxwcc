@@ -18,12 +18,27 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 4774;
 
-app.use(cors({
-    origin: ['http://localhost:5173', 'https://bcgxwcc-opening-event.netlify.app'],
+const corsOptions = {
+    origin: (origin, callback) => {
+        const allowedOrigins = [
+            'http://localhost:5173',
+            'https://bcgxwcc-opening-event.netlify.app'
+        ];
+      
+        // Allow requests with no origin (like mobile apps, curl requests)
+        if (!origin || allowedOrigins.includes(origin))
+            callback(null, true);
+        else
+            callback(new Error('Not allowed by CORS'));
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-}));
+    allowedHeaders: ['Content-Type', 'Authorization', 'Origin'],
+    exposedHeaders: ['Content-Length', 'Authorization'],
+    optionsSuccessStatus: 200 // For legacy browser support
+};
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 app.use(cookieParser());
 app.use(compression());
 app.use(express.json({ limit: "10mb" }));
