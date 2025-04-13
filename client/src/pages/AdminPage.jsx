@@ -249,7 +249,7 @@ const RSVPCard = ({ eventName }) => {
 const AdminPage = () => {
   return (
     <Tabs defaultValue="bcg" className="w-full">
-      <TabsList className="border-b p-4">
+      <TabsList className="border-b p-4 mb-4">
         <TabsTrigger value="bcg">BCG Opening Event</TabsTrigger>
         <TabsTrigger value="cadena">Cadena Info Session</TabsTrigger>
       </TabsList>
