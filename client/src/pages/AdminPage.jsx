@@ -12,6 +12,9 @@ import request from '@/utils/request';
 import { Loader2 } from 'lucide-react';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 
+// import shadcn tabs components
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
 const MemberCard = ({ fullname, email }) => (
   <div className="p-4 rounded-2xl border bg-accent border-ring hover:shadow-xl transition-colors cursor-pointer">
     <div>{fullname}</div>
@@ -19,7 +22,7 @@ const MemberCard = ({ fullname, email }) => (
   </div>
 );
 
-const AdminPage = () => {
+const RSVPCard = ({ eventName }) => {
   const [showScanner, setShowScanner] = useState(false);
   const { logout } = useAuth();
   const navigate = useNavigate();
@@ -35,7 +38,7 @@ const AdminPage = () => {
       setIsLoading(true);
       try {
         const response = await request({
-          route: '/api/v1/get-attendees/WCCxBCGOpeningEvent',
+          route: `/api/v1/get-attendees/${eventName}`,
           type: 'GET',
         });
         setMembers(response.data.attendees);
@@ -141,29 +144,29 @@ const AdminPage = () => {
     }
   };
 
-  const handleSendThankYouEmails = async () => {
-    setIsLoading(true);
-    try {
-      await request({ 
-        route: '/api/v1/send-thank-you-emails/:eventName', 
-        type: 'GET',
-        routeParams: { eventName: 'WCCxBCGOpeningEvent' }
-      });
-      setAlert({
-        type: 'success',
-        message: 'Thank you emails sent successfully',
-      });
-    }
-    catch (error) {
-      setAlert({
-        type: 'error',
-        message: error.message || 'Failed to send thank you emails',
-      });
-    }
-    finally {
-      setIsLoading(false);
-    }
-  }
+  // const handleSendThankYouEmails = async () => {
+  //   setIsLoading(true);
+  //   try {
+  //     await request({ 
+  //       route: '/api/v1/send-thank-you-emails/:eventName', 
+  //       type: 'GET',
+  //       routeParams: { eventName: eventName },
+  //     });
+  //     setAlert({
+  //       type: 'success',
+  //       message: 'Thank you emails sent successfully',
+  //     });
+  //   }
+  //   catch (error) {
+  //     setAlert({
+  //       type: 'error',
+  //       message: error.message || 'Failed to send thank you emails',
+  //     });
+  //   }
+  //   finally {
+  //     setIsLoading(false);
+  //   }
+  // }
 
   const handleAlertClose = () => {
     setAlert(null);
@@ -175,9 +178,9 @@ const AdminPage = () => {
         <Button onClick={() => setShowScanner(true)} className="cursor-pointer">
           Scan QR Code
         </Button>
-        <Button className="cursor-pointer" onClick={() => handleSendThankYouEmails()}>
+        {/* <Button className="cursor-pointer" onClick={() => handleSendThankYouEmails()}>
           Send Thank You Emails
-        </Button>
+        </Button> */}
         <Button variant="destructive" className="cursor-pointer" onClick={handleLogout}>
           Logout
         </Button>
@@ -240,6 +243,25 @@ const AdminPage = () => {
         </AlertDialogContent>
       </AlertDialog>
     </div>
+  );
+}
+
+const AdminPage = () => {
+  return (
+    <Tabs defaultValue="bcg" className="w-full">
+      <TabsList className="border-b p-4">
+        <TabsTrigger value="bcg">BCG Opening Event</TabsTrigger>
+        <TabsTrigger value="cadena">Cadena Info Session</TabsTrigger>
+      </TabsList>
+
+      <TabsContent value="bcg" className="space-y-4 p-4">
+        <RSVPCard eventName="WCCxBCGOpeningEvent" />
+      </TabsContent>
+
+      <TabsContent value="cadena" className="p-4 space-y-4">
+        <RSVPCard eventName="WCCxCadenaInfoSession" />
+      </TabsContent>
+    </Tabs>
   );
 };
 

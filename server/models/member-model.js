@@ -13,6 +13,10 @@ const memberSchema = new mongoose.Schema({
     required: [true, 'Fullname is required'],
     trim: true,
   },
+  avatarFallback: {
+    type: String,
+    default: '',
+  },
 });
 
 module.exports = mongoose.model('Member', memberSchema);
