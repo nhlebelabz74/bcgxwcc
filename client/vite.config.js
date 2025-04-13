@@ -14,5 +14,24 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, "./src"),
     }
+  },
+  base: '/',
+  build: {
+    outDir: path.resolve(__dirname, './dist'),
+    assetsDir: 'assets',
+    cssCodeSplit: true,
+    emptyOutDir: true,
+    sourcemap: process.env.NODE_ENV !== 'production',
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+      output: {
+        comments: false,
+      },
+    },
+    chunkSizeWarningLimit: 1500,
   }
 })
