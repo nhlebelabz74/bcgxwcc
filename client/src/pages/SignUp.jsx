@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import request from "@/utils/request";
 import { Loader2, AlertCircle, CheckCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 // Zod schema for form validation
 const signupSchema = z.object({
@@ -50,6 +51,7 @@ const SignUpForm = ({ className, ...props }) => {
   const [alertOpen, setAlertOpen] = useState(false);
   const [alert, setAlert] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
 
   // Form submission handler
   const onSubmit = async (data) => {
