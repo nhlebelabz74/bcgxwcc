@@ -450,7 +450,7 @@ const CadenaEmailHtml = () => {
           <p>Please RSVP by clicking the button below to secure your spot</p>
           
           <div class="button-container">
-            <a href="https://wcc-events-management/signup" class="rsvp-button">RSVP NOW</a>
+            <a href="https://wcc-events-management/rsvp" class="rsvp-button">RSVP NOW</a>
           </div>
           
           <div class="note">

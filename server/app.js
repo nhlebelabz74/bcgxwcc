@@ -21,7 +21,7 @@ const port = process.env.PORT || 4774;
 const corsOptions = {
     origin: [
         'http://localhost:5173',
-        'https://bcgxwcc-opening-event.netlify.app'
+        'https://wcc-events-management.netlify.app'
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
