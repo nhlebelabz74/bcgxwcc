@@ -131,7 +131,7 @@ const sendQR = asyncWrapper(async (req, res) => {
   }
 });
 
-// endpoint: /send-event-email/:eventName
+// endpoint: /send-event-email-test/:eventName
 const sendEventEmailTest = asyncWrapper(async (req, res) => {
   const { eventName } = req.params;
 
@@ -141,11 +141,6 @@ const sendEventEmailTest = asyncWrapper(async (req, res) => {
   if (!event) {
     return res.status(404).json({ message: 'Event not found' });
   }
-
-  // const buffer = Buffer.from(
-  //   cadena.replace(/^data:image\/\w+;base64,/, ''), 
-  //   'base64'
-  // );
 
   const attachments = [
     {
@@ -204,7 +199,7 @@ const sendEventEmail = asyncWrapper(async (req, res) => {
     await sendEmail({
       receiver_email: emails,
       subject: "New Event Alert! - Cadena Growth Partners",
-      html: CadenaEmailHtml,
+      html: CadenaEmailHtml(),
       attachments: attachments
     });
 
