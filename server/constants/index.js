@@ -312,7 +312,165 @@ const thankYou_emailHtml = ({ survey }) => {
   `;
 }
 
+const CadenaEmailHtml = () => {
+  return `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Cadena Growth Partners Information Session</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            background-color: #FCFDFF;
+            text-align: left;
+            padding: 20px;
+            color: #051D41;
+          }
+          .container {
+            max-width: 600px;
+            background: #FFFFFF;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin: auto;
+            text-align: left;
+          }
+          h1 {
+            color: #104E81;
+          }
+          h2 {
+            color: #104E81;
+            margin-top: 25px;
+          }
+          p {
+            color: #6E85A0;
+            font-size: 16px;
+          }
+          .bold {
+            font-weight: bold;
+          }
+          .cadena-primary {
+            color: #104E81;
+          }
+          .cadena-secondary {
+            color: #6C77E3;
+            font-weight: bold;
+          }
+          .event-details {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #F5F7FB;
+            border-radius: 8px;
+          }
+          .poster {
+            text-align: center;
+            margin-top: 20px;
+          }
+          .poster img {
+            width: 1080px;
+            height: 1350px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+          }
+          .gold {
+            color: #CE9F00;
+          }
+          .signature {
+            margin-top: 30px;
+            font-size: 16px;
+            color: #051D41;
+          }
+          .signature span {
+            color: #CE9F00;
+          }
+          .speakers-section {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #F5F7FB;
+            border-radius: 8px;
+          }
+          .note {
+            font-style: italic;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #FFF8E5;
+            border-left: 4px solid #CE9F00;
+            border-radius: 4px;
+          }
+          .rsvp-button {
+            display: inline-block;
+            background-color: #6C77E3;
+            color: white;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            margin: 20px 0;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+          }
+          .rsvp-button:hover {
+            background-color: #104E81;
+          }
+          .button-container {
+            text-align: center;
+            margin: 25px 0;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <h1>Hello WCC Members</h1>
+          <p>We are pleased to invite you to attend an <span class="bold">Information Session by <span class="cadena-secondary">Cadena Growth Partners</span></span> hosted by <span class="cadena-primary">The Wits Consulting Club</span>. This is an excellent opportunity to learn about career paths in consulting!</p>
+          
+          <div class="event-details">
+            <p><span class="bold">Event:</span> <span class="cadena-secondary">Cadena Growth Partners</span> Information Session</p>
+            <p><span class="bold">Date:</span> 24th April 2025</p>
+            <p><span class="bold">Time:</span> 17h30 for 18h00 to 20h00</p>
+            <p><span class="bold">Location:</span> John Moffat, A1</p>
+          </div>
+          
+          <h2>About Cadena Growth Partners</h2>
+          <p><span class="cadena-secondary">Cadena Growth Partners</span> is a premier management consulting firm specializing in growth strategy, digital transformation, and operational excellence. With a strong presence across Africa and global markets, they work with leading organizations to drive sustainable business growth and innovation. Their diverse team brings expertise from various industries including finance, technology, healthcare, and manufacturing.</p>
+          
+          <h2>Featured Speakers</h2>
+          <div class="speakers-section">
+            <p><span class="bold cadena-secondary">Valter Adao</span>: CEO and Digital Leader at Cadena Growth Partners</p>
+            <p><span class="bold cadena-secondary">Victor Peenz</span>: Management Consutlant at Cadena Growth Partners</p>
+            <p><span class="bold cadena-secondary">Siphile Shange</span>: Junior Designer at Cadena Growth Partners</p>
+            <p></p>
+          </div>
+          
+          <p>This event will include an overview of <span class="cadena-secondary">Cadena Growth Partners</span>, career opportunities, and a Q&A session with their team. A detailed agenda will be sent to you along with your QR code for entry after you RSVP.</p>
+          
+          <p>Please RSVP by clicking the button below to secure your spot</p>
+          
+          <div class="button-container">
+            <a href="https://wcc-events-management/signup" class="rsvp-button">RSVP NOW</a>
+          </div>
+          
+          <div class="note">
+            <p>While this session is primarily geared towards postgraduate students, we welcome attendance from all students regardless of your year of study. This is an excellent networking opportunity for anyone interested in consulting careers.</p>
+          </div>
+
+          <div class="poster">
+            <p>Check out the event poster below:</p>
+            <img src="cid:cadena-poster" alt="Cadena Growth Partners Event Poster" />
+          </div>
+          
+          <p class="signature">We look forward to seeing you there!<br><br>Kind regards,<br>Banzile Nhlebela <span>|</span> Co - Head <span>|</span> <span class="bold">The Wits Consulting Club</span></p>
+        </div>
+      </body>
+    </html>
+  `;
+};
+
 module.exports = {
   QR_emailHtml,
-  thankYou_emailHtml
+  thankYou_emailHtml,
+  CadenaEmailHtml,
 };

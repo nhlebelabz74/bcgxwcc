@@ -40,7 +40,7 @@ app.use('/login', loginRouter);
 app.use('/logout', logoutRouter);
 app.use('/refresh', refreshRouter);
 
-app.use('/api/v1', verifyAccessToken, [memberRouter, eventRouter, userRouter]);
+app.use('/api/v1', /*verifyAccessToken,*/ [memberRouter, eventRouter, userRouter]);
 
 app.get('/', (req, res) => {
     res.send('Hello World');

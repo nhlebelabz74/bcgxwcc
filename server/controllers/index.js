@@ -1,6 +1,6 @@
 const { createUser, createUsers } = require('./userController');
 const { createEvent, addRSVP, addRSVPs, addAttendee, getAttendees, sseUpdates, sendThankYouEmails } = require('./eventController');
-const { sendQR, createMember, createMembers } = require('./memberController');
+const { sendQR, createMember, createMembers, sendEventEmail, sendEventEmailTest } = require('./memberController');
 
 const loginController = require('./loginController');
 const logoutController = require('./logoutController');
@@ -16,6 +16,8 @@ module.exports = {
   addAttendee,
   sendQR,
   createMember,
+  sendEventEmail,
+  sendEventEmailTest,
   getAttendees,
   sendThankYouEmails,
   createUsers,

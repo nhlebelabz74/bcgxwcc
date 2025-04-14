@@ -71,7 +71,7 @@ const addRSVP = asyncWrapper(async (req, res) => {
   // Add the email to the RSVP list
   await Event.updateOne({ name: eventName }, { $push: { 'attendance.rsvps': email } });
 
-  return res.status(200).json({ message: 'RSVP added successfully' });
+  return res.status(200).json({ message: 'RSVP added successfully', member: member });
 });
 
 // endpoint: /add-rsvps/:eventName

@@ -173,7 +173,7 @@ const RSVPCard = ({ eventName }) => {
   };
 
   return (
-    <div className="p-4 flex flex-col h-screen">
+    <div className="flex flex-col h-screen">
       <div className="flex justify-between mb-4">
         <Button onClick={() => setShowScanner(true)} className="cursor-pointer">
           Scan QR Code
@@ -248,8 +248,9 @@ const RSVPCard = ({ eventName }) => {
 
 const AdminPage = () => {
   return (
-    <Tabs defaultValue="bcg" className="w-full">
-      <TabsList className="border-b p-4 mb-4">
+    <div className='flex flex-col h-screen p-4'>
+      <Tabs defaultValue="bcg" className="w-full flex"> 
+      <TabsList className="border-b">
         <TabsTrigger value="bcg">BCG Opening Event</TabsTrigger>
         <TabsTrigger value="cadena">Cadena Info Session</TabsTrigger>
       </TabsList>
@@ -262,6 +263,7 @@ const AdminPage = () => {
         <RSVPCard eventName="WCCxCadenaInfoSession" />
       </TabsContent>
     </Tabs>
+    </div>
   );
 };
 

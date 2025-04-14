@@ -1,10 +1,15 @@
 const { Member, Event } = require('../models');
 const { asyncWrapper } = require('../middleware');
 const sendEmail = require('../utils/send-email');
-const { QR_emailHtml, thankYou_emailHtml } = require('../constants');
+const { QR_emailHtml, thankYou_emailHtml, CadenaEmailHtml } = require('../constants');
 const generateQR = require('../utils/generateQR');
 require('dotenv').config();
 const { AES } = require('crypto-js');
+const fs = require('fs');
+const path = require('path');
+
+// Read the image file as a Buffer
+const cadena = fs.readFileSync(path.join(__dirname, '../constants/cadenaPoster.png'));
 
 // endpoint: /create-member
 const createMember = asyncWrapper(async (req, res) => {
@@ -104,7 +109,7 @@ const sendQR = asyncWrapper(async (req, res) => {
         await sendEmail({
           receiver_email: email,
           subject: 'Thanks for RSVPing for our event',
-          html: QR_emailHtml({ name: member.fullname }), // Your email template function
+          html: QR_emailHtml({ name: member.fullname }),
           attachments: attachments
         });
 
@@ -126,11 +131,94 @@ const sendQR = asyncWrapper(async (req, res) => {
   }
 });
 
-// add sendThankYou function here
+// endpoint: /send-event-email/:eventName
+const sendEventEmailTest = asyncWrapper(async (req, res) => {
+  const { eventName } = req.params;
+
+  // Find the event by name
+  const event = await Event.findOne({ name: eventName });
+
+  if (!event) {
+    return res.status(404).json({ message: 'Event not found' });
+  }
+
+  // const buffer = Buffer.from(
+  //   cadena.replace(/^data:image\/\w+;base64,/, ''), 
+  //   'base64'
+  // );
+
+  const attachments = [
+    {
+      filename: 'Cadena-Poster.png',
+      content: cadena,
+      cid: 'cadena-poster'
+    }
+  ];
+
+  try {
+    // Send the email
+    await sendEmail({
+      receiver_email: "banzile.nhlebela74@gmail.com",
+      subject: "New Event Alert! - Cadena Growth Partners",
+      html: CadenaEmailHtml(),
+      attachments: attachments
+    });
+
+    return res.status(200).json({ message: 'Email sent successfully' });
+  } catch (error) {
+    console.error('Error sending email:', error);
+    return res.status(500).json({ message: 'Email sending failed', error: error.message });
+  }
+});
+
+// // endpoint: /send-event-email/:eventName
+const sendEventEmail = asyncWrapper(async (req, res) => {
+  const { eventName } = req.params;
+
+  // Find the event by name
+  const event = await Event.findOne({ name: eventName });
+
+  if (!event) {
+    return res.status(404).json({ message: 'Event not found' });
+  }
+
+  // get all member emails
+  const members = await Member.find();
+  const emails = members.map(member => member.email);
+
+  // const buffer = Buffer.from(
+  //   cadena.replace(/^data:image\/\w+;base64,/, ''), 
+  //   'base64'
+  // );
+
+  const attachments = [
+    {
+      filename: 'Cadena-Poster.png',
+      content: cadena,
+      cid: 'cadena-poster'
+    }
+  ];
+
+  try {
+    // Send the email
+    await sendEmail({
+      receiver_email: emails,
+      subject: "New Event Alert! - Cadena Growth Partners",
+      html: CadenaEmailHtml,
+      attachments: attachments
+    });
+
+    return res.status(200).json({ message: 'Email sent successfully' });
+  } catch (error) {
+    console.error('Error sending email:', error);
+    return res.status(500).json({ message: 'Email sending failed', error: error.message });
+  }
+});
 
 module.exports = {
   createMember,
   createMembers,
   sendQR,
-  // add sendThankYou here
+  sendEventEmail,
+  sendEventEmailTest,
 };

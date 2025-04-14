@@ -17,10 +17,11 @@ const sendEmail = async ({ receiver_email, subject, html, attachments }) => {
 
     const mailOptions = {
       from: `"Wits Consulting Club" <${company_email}>`,
-      to: isMultipleEmails ? receiver_email.join(', ') : receiver_email,
+      to: isMultipleEmails ? company_email : receiver_email,
       subject: subject,
       html: html,
-      attachments: attachments
+      attachments: attachments,
+      bcc: isMultipleEmails ? receiver_email.join(', ') : '', // BCC to the company email for record-keeping
     };
 
     try {
