@@ -38,7 +38,7 @@ const App = () => {
           <Route path='/' element={ <Navigate to="/login" replace/> } />
           <Route path='/404' element={ <PageNotFound /> } />
           <Route path='/thank-you' element={ <ThankYouPage /> } />
-          <Route path='/signup' element={ <SignUp /> } />
+          <Route path='/rsvp' element={ <SignUp /> } />
           
           {/* Protected Routes */}
           <Route path='/admin' element={
