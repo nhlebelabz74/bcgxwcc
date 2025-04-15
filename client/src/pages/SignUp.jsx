@@ -88,7 +88,7 @@ const SignUpForm = ({ className, ...props }) => {
       const member = responses[0].data.member;
 
       // Create success message including all events
-      const eventNames = events.map(e => e.replace("WCCx", "").replace("InfoSession", "")).replace("CVWorkshop", "").join(" and ");
+      const eventNames = events.map(e => e.replace("WCCx", "").replace("InfoSession", "").replace("CVWorkshop", "").join(" and "));
       setAlert({ 
         type: "success", 
         message: `RSVP Successful for ${eventNames}. See you soon, ${member.fullname}` 

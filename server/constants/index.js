@@ -618,7 +618,7 @@ const OliverWymanEmailHtml = () => {
           <p>We encourage all students to prepare questions in advance to make the most of this valuable session with Dean.</p>
           
           <div class="poster">
-            <p>Workshop details:</p>
+            <p class="ow-secondary">Workshop details:</p>
             <img src="cid:oliver-wyman-poster" alt="Oliver Wyman Workshop Poster" />
           </div>
           
