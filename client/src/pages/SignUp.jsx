@@ -88,7 +88,7 @@ const SignUpForm = ({ className, ...props }) => {
       const member = responses[0].data.member;
 
       // Create success message including all events
-      const eventNames = events.map(e => e.replace("WCCx", "").replace("InfoSession", "")).join(" and ");
+      const eventNames = events.map(e => e.replace("WCCx", "").replace("InfoSession", "")).replace("CVWorkshop", "").join(" and ");
       setAlert({ 
         type: "success", 
         message: `RSVP Successful for ${eventNames}. See you soon, ${member.fullname}` 
@@ -162,7 +162,7 @@ const SignUpForm = ({ className, ...props }) => {
                             />
                           </FormControl>
                           <div className="space-y-1 leading-none">
-                            <FormLabel>Cadena Info Session</FormLabel>
+                            <FormLabel>Cadena Growth Partners Info Session</FormLabel>
                           </div>
                         </FormItem>
                       )}
@@ -180,7 +180,7 @@ const SignUpForm = ({ className, ...props }) => {
                             />
                           </FormControl>
                           <div className="space-y-1 leading-none">
-                            <FormLabel>Oliver Wyman Info Session</FormLabel>
+                            <FormLabel>Oliver Wyman CV Workshop</FormLabel>
                           </div>
                         </FormItem>
                       )}
