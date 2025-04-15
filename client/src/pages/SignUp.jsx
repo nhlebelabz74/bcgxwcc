@@ -68,7 +68,7 @@ const SignUpForm = ({ className, ...props }) => {
       // Determine which event(s) to RSVP for
       const events = [];
       if (data.cadena) events.push("WCCxCadenaInfoSession");
-      if (data.oliverWyman) events.push("WCCxOliverWymanCVWorkshop");
+      if (data.oliverWyman) events.push("WCCxOliverWymanCVWorkshops");
 
       // Send RSVP requests for all selected events
       const responses = await Promise.all(events.map(eventName => 
@@ -97,14 +97,10 @@ const SignUpForm = ({ className, ...props }) => {
       setAlertOpen(true);
     } catch (error) {
       console.error("RSVP error:", error);
-      // Fixed error handling to properly extract error message
-      const errorMessage = error.response?.data?.message || 
-                          error.message || 
-                          "An error occurred during the RSVP process";
       
       setAlert({
         type: "error",
-        message: errorMessage
+        message: error.message || "An error occurred during the RSVP process",
       });
       setAlertOpen(true);
     } finally {
