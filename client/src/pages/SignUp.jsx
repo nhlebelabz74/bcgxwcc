@@ -57,7 +57,7 @@ const SignUpForm = ({ className, ...props }) => {
 
   // State variables
   const [alertOpen, setAlertOpen] = useState(false);
-  const [alert, setAlert] = useState(null);
+  const [alert, setAlert] = useState({ type: null, message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
@@ -68,7 +68,7 @@ const SignUpForm = ({ className, ...props }) => {
       // Determine which event(s) to RSVP for
       const events = [];
       if (data.cadena) events.push("WCCxCadenaInfoSession");
-      if (data.oliverWyman) events.push("WCCxOliverWymanCVWorkshops");
+      if (data.oliverWyman) events.push("WCCxOliverWymanCVWorkshop");
 
       // Send RSVP requests for all selected events
       const responses = await Promise.all(events.map(eventName => 
@@ -97,6 +97,7 @@ const SignUpForm = ({ className, ...props }) => {
       setAlertOpen(true);
     } catch (error) {
       console.error("RSVP error:", error);
+      console.log("Error message:", error);
       
       setAlert({
         type: "error",
@@ -231,7 +232,9 @@ const SignUpForm = ({ className, ...props }) => {
                   {alert?.type === "success" ? "Success" : "Error"}
                 </AlertDialogTitle>
               </div>
-              <AlertDialogDescription>{alert?.message}</AlertDialogDescription>
+              <AlertDialogDescription>
+                {typeof alert?.message === 'string' ? alert?.message : ""}
+              </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogAction 

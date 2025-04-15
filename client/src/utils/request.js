@@ -111,7 +111,7 @@ const request = async ({ route, type, body, routeParams }) => {
       }
 
       // Standardize error response for non-auth errors
-      const errorData = error.response?.data || { message: error.message };
+      const errorData = error.response?.data.message;
       console.log("Error data:", errorData);
       throw {
         message: errorData || "An error occurred",
