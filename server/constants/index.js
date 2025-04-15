@@ -469,8 +469,169 @@ const CadenaEmailHtml = () => {
   `;
 };
 
+const OliverWymanEmailHtml = () => {
+  return `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Oliver Wyman CV and Contract Negotiation Workshop</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            background-color: #F5F7FA;
+            text-align: left;
+            padding: 20px;
+            color: #333333;
+          }
+          .container {
+            max-width: 600px;
+            background: #FFFFFF;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin: auto;
+            text-align: left;
+          }
+          h1 {
+            color: #00205B;
+          }
+          h2 {
+            color: #00205B;
+            margin-top: 25px;
+          }
+          p {
+            color: #555555;
+            font-size: 16px;
+            line-height: 1.5;
+          }
+          .bold {
+            font-weight: bold;
+          }
+          .ow-primary {
+            color: #00205B;
+          }
+          .ow-secondary {
+            color: #FF5A00;
+            font-weight: bold;
+          }
+          .event-details {
+            margin-top: 10px;
+            padding: 15px;
+            background-color: #EDF1F7;
+            border-radius: 8px;
+          }
+          .poster {
+            text-align: center;
+            margin-top: 20px;
+          }
+          .poster img {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+          }
+          .signature {
+            margin-top: 30px;
+            font-size: 16px;
+            color: #333333;
+          }
+          .signature span {
+            color: #FF5A00;
+          }
+          .speakers-section {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #EDF1F7;
+            border-radius: 8px;
+          }
+          .note {
+            font-style: italic;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #FFF1E6;
+            border-left: 4px solid #FF5A00;
+            border-radius: 4px;
+          }
+          .divider {
+            border-top: 2px solid #EDF1F7;
+            margin: 25px 0;
+          }
+          .rsvp-button {
+            display: inline-block;
+            background-color: #FF5A00;
+            color: white;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            margin: 20px 0;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+          }
+          .rsvp-button:hover {
+            background-color: #00205B;
+          }
+          .button-container {
+            text-align: center;
+            margin: 25px 0;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <h1>Hello WCC Members</h1>
+          <p>We are excited to invite you to attend an <span class="bold">Online CV and Contract Negotiation Workshop</span> hosted by <span class="ow-secondary">Oliver Wyman</span> in collaboration with <span class="ow-primary">The Wits Consulting Club</span>.</p>
+          <p>Join us for an exclusive session with <span class="bold ow-secondary">Dean Mokoena</span>, Campus Recruiter at <span class="bold ow-secondary">Oliver Wyman</span>, as he shares expert tips on building a standout CV and navigating contract negotiations</p>
+          
+          <div class="event-details">
+            <p><span class="bold">Event:</span> <span class="ow-secondary">Oliver Wyman</span> CV and Contract Negotiation Workshop</p>
+            <p><span class="bold">Date:</span> 23rd April 2025</p>
+            <p><span class="bold">Time:</span> Start at 18h00</p>
+            <p><span class="bold">Location:</span> Online (Zoom link to be provided on the day of the event)</p>
+          </div>
+          
+          <h2>Featured Presenters</h2>
+          <div class="speakers-section">
+            <p><span class="bold ow-secondary">Dean Mokoena</span>: Campus Recruiter at Oliver Wyman</p>
+          </div>
+          
+          <div class="divider"></div>
+          
+          <p>With experience at Deloitte, McKinsey & Company, and now <span class="ow-secondary">Oliver Wyman</span>, Dean offers insights into what top firms look for and how to position yourself for success.</p>
+
+          <p>Perfect for students prepping for internships, grad roles, or career transitions.</p>
+          
+          <p>Please RSVP by clicking the button below to secure your spot:</p>
+          
+          <div class="button-container">
+            <a href="https://wcc-events-management.netlify.app/rsvp" class="rsvp-button">RSVP NOW</a>
+          </div>
+          
+          <div class="note">
+            <p><span class="bold">Important:</span> After RSVPing, the Zoom link will be sent to you on the day of the workshop.</p>
+          </div>
+          
+          <p>We encourage all students to prepare questions in advance to make the most of this valuable session with Dean.</p>
+          
+          <div class="poster">
+            <p>Workshop details:</p>
+            <img src="cid:oliver-wyman-poster" alt="Oliver Wyman Workshop Poster" />
+          </div>
+          
+          <p class="signature">We look forward to your participation!<br><br>Kind regards,<br>Banzile Nhlebela <span>|</span> Co - Head <span>|</span> <span class="bold">The Wits Consulting Club</span></p>
+        </div>
+      </body>
+    </html>
+  `;
+};
+
 module.exports = {
   QR_emailHtml,
   thankYou_emailHtml,
   CadenaEmailHtml,
+  OliverWymanEmailHtml,
 };

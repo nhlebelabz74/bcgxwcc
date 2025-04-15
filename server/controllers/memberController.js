@@ -1,7 +1,7 @@
 const { Member, Event } = require('../models');
 const { asyncWrapper } = require('../middleware');
 const sendEmail = require('../utils/send-email');
-const { QR_emailHtml, thankYou_emailHtml, CadenaEmailHtml } = require('../constants');
+const { QR_emailHtml, OliverWymanEmailHtml } = require('../constants');
 const generateQR = require('../utils/generateQR');
 require('dotenv').config();
 const { AES } = require('crypto-js');
@@ -9,7 +9,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Read the image file as a Buffer
-const cadena = fs.readFileSync(path.join(__dirname, '../constants/cadenaPoster.png'));
+const ow = fs.readFileSync(path.join(__dirname, '../constants/owPoster.jpg'));
 
 // endpoint: /create-member
 const createMember = asyncWrapper(async (req, res) => {
@@ -144,9 +144,9 @@ const sendEventEmailTest = asyncWrapper(async (req, res) => {
 
   const attachments = [
     {
-      filename: 'Cadena-Poster.png',
-      content: cadena,
-      cid: 'cadena-poster'
+      filename: 'Oliver-Wyman-Poster.jpg',
+      content: ow,
+      cid: 'oliver-wyman-poster'
     }
   ];
 
@@ -154,8 +154,8 @@ const sendEventEmailTest = asyncWrapper(async (req, res) => {
     // Send the email
     await sendEmail({
       receiver_email: "banzile.nhlebela74@gmail.com",
-      subject: "New Event Alert! - Cadena Growth Partners",
-      html: CadenaEmailHtml(),
+      subject: "New Event Alert! - Oliver Wyman",
+      html: OliverWymanEmailHtml(),
       attachments: attachments
     });
 
@@ -166,7 +166,7 @@ const sendEventEmailTest = asyncWrapper(async (req, res) => {
   }
 });
 
-// // endpoint: /send-event-email/:eventName
+// endpoint: /send-event-email/:eventName
 const sendEventEmail = asyncWrapper(async (req, res) => {
   const { eventName } = req.params;
 
@@ -181,29 +181,33 @@ const sendEventEmail = asyncWrapper(async (req, res) => {
   const members = await Member.find();
   const emails = members.map(member => member.email);
 
-  // const buffer = Buffer.from(
-  //   cadena.replace(/^data:image\/\w+;base64,/, ''), 
-  //   'base64'
-  // );
-
   const attachments = [
     {
-      filename: 'Cadena-Poster.png',
-      content: cadena,
-      cid: 'cadena-poster'
+      filename: 'Oliver-Wyman-Poster.jpg',
+      content: ow,
+      cid: 'oliver-wyman-poster'
     }
   ];
 
   try {
     // Send the email
-    await sendEmail({
+    const result = await sendEmail({
       receiver_email: emails,
-      subject: "New Event Alert! - Cadena Growth Partners",
-      html: CadenaEmailHtml(),
+      subject: "New Event Alert! - Oliver Wyman",
+      html: OliverWymanEmailHtml(),
       attachments: attachments
     });
 
-    return res.status(200).json({ message: 'Email sent successfully' });
+    if (result.success) {
+      return res.status(200).json({ message: `Email sent successfully to ${result.sent} recipients` });
+    } else if (result.partialSuccess) {
+      return res.status(207).json({ 
+        message: `Email partially sent: ${result.sent} successful, ${result.failed} failed`,
+        errors: result.errors 
+      });
+    } else {
+      throw new Error(result.error);
+    }
   } catch (error) {
     console.error('Error sending email:', error);
     return res.status(500).json({ message: 'Email sending failed', error: error.message });

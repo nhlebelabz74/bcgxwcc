@@ -29,6 +29,7 @@ import {
   AlertDialogAction,
   AlertDialogFooter
 } from "@/components/ui/alert-dialog";
+import { Checkbox } from "@/components/ui/checkbox";
 import request from "@/utils/request";
 import { Loader2, AlertCircle, CheckCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -36,6 +37,11 @@ import { useNavigate } from "react-router-dom";
 // Zod schema for form validation
 const signupSchema = z.object({
   email: z.string().email("Invalid email address").min(1, "Email is required"),
+  cadena: z.boolean().optional(),
+  oliverWyman: z.boolean().optional(),
+}).refine(data => data.cadena || data.oliverWyman, {
+  message: "Please select at least one event",
+  path: ["events"]
 });
 
 const SignUpForm = ({ className, ...props }) => {
@@ -44,6 +50,8 @@ const SignUpForm = ({ className, ...props }) => {
     resolver: zodResolver(signupSchema),
     defaultValues: {
       email: "",
+      cadena: false,
+      oliverWyman: false,
     },
   });
 
@@ -57,25 +65,39 @@ const SignUpForm = ({ className, ...props }) => {
   const onSubmit = async (data) => {
     setIsSubmitting(true);
     try {
-      const response = await request({
-        route: "/add-rsvp/:eventName",
-        type: "POST",
-        body: {
-          email: data.email,
-        },
-        routeParams: {
-          eventName: "WCCxCadenaInfoSession",
-        },
+      // Determine which event(s) to RSVP for
+      const events = [];
+      if (data.cadena) events.push("WCCxCadenaInfoSession");
+      if (data.oliverWyman) events.push("WCCxOliverWymanCVWorkshop");
+
+      // Send RSVP requests for all selected events
+      const responses = await Promise.all(events.map(eventName => 
+        request({
+          route: "/add-rsvp/:eventName",
+          type: "POST",
+          body: {
+            email: data.email,
+          },
+          routeParams: {
+            eventName: eventName,
+          },
+        })
+      ));
+
+      // Get member info from the first response
+      const member = responses[0].data.member;
+
+      // Create success message including all events
+      const eventNames = events.map(e => e.replace("WCCx", "").replace("InfoSession", "")).join(" and ");
+      setAlert({ 
+        type: "success", 
+        message: `RSVP Successful for ${eventNames}. See you soon, ${member.fullname}` 
       });
-
-      const member = response.data.member;
-
-      setAlert({ type: "success", message: `RSVP Successful. See you soon, ${member.fullname}` });
       setAlertOpen(true);
     } catch (error) {
       setAlert({
         type: "error",
-        message: error.message || "An error occurred during the rsvp process",
+        message: error.message || "An error occurred during the RSVP process",
       });
       setAlertOpen(true);
     } finally {
@@ -94,12 +116,11 @@ const SignUpForm = ({ className, ...props }) => {
   return (
     <>
       <div className={cn("flex flex-col gap-6", className)} {...props}>
-        {/* Login Card */}
         <Card className="dark:bg-background">
           <CardHeader>
             <CardTitle>RSVP For The Event</CardTitle>
             <CardDescription>
-              Enter your email below to rsvp for the event
+              Enter your email below and select the event(s) you want to attend
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -124,6 +145,54 @@ const SignUpForm = ({ className, ...props }) => {
                       </FormItem>
                     )}
                   />
+
+                  {/* Event Selection */}
+                  <div className="space-y-4">
+                    <FormLabel>Select Event(s)</FormLabel>
+                    
+                    <FormField
+                      control={form.control}
+                      name="cadena"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                          <FormControl>
+                            <Checkbox
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                          </FormControl>
+                          <div className="space-y-1 leading-none">
+                            <FormLabel>Cadena Info Session</FormLabel>
+                          </div>
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={form.control}
+                      name="oliverWyman"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                          <FormControl>
+                            <Checkbox
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                          </FormControl>
+                          <div className="space-y-1 leading-none">
+                            <FormLabel>Oliver Wyman Info Session</FormLabel>
+                          </div>
+                        </FormItem>
+                      )}
+                    />
+                    
+                    {/* General events error message */}
+                    {form.formState.errors.events && (
+                      <p className="text-sm font-medium text-destructive">
+                        {form.formState.errors.events.message}
+                      </p>
+                    )}
+                  </div>
 
                   {/* Submit Button */}
                   <Button
