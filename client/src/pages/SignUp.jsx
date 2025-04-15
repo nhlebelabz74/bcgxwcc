@@ -88,16 +88,23 @@ const SignUpForm = ({ className, ...props }) => {
       const member = responses[0].data.member;
 
       // Create success message including all events
-      const eventNames = events.map(e => e.replace("WCCx", "").replace("InfoSession", "").replace("CVWorkshop", "").join(" and "));
+      const eventNames = events.map(e => e.replace("WCCx", "").replace("InfoSession", "").replace("CVWorkshop", ""));
+      const formattedEvents = eventNames.join(" and ");
       setAlert({ 
         type: "success", 
-        message: `RSVP Successful for ${eventNames}. See you soon, ${member.fullname}` 
+        message: `RSVP Successful for ${formattedEvents}. See you soon, ${member.fullname}` 
       });
       setAlertOpen(true);
     } catch (error) {
+      console.error("RSVP error:", error);
+      // Fixed error handling to properly extract error message
+      const errorMessage = error.response?.data?.message || 
+                          error.message || 
+                          "An error occurred during the RSVP process";
+      
       setAlert({
         type: "error",
-        message: error.message || "An error occurred during the RSVP process",
+        message: errorMessage
       });
       setAlertOpen(true);
     } finally {
